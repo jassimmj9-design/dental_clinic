@@ -32,6 +32,7 @@ const PatientForm = () => {
           if (data.dob) data.dob = data.dob.split('T')[0];
           setFormData(data);
         } catch (error) {
+          console.error(error);
           toast.error('Failed to load patient data');
           navigate('/patients');
         }

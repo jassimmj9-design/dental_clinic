@@ -22,7 +22,6 @@ const Appointments = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [patients, setPatients] = useState([]);
-  const [dentists, setDentists] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [editingAppt, setEditingAppt] = useState(null);
   const { user } = useContext(AuthContext);
@@ -49,6 +48,7 @@ const Appointments = () => {
       }));
       setEvents(formattedEvents);
     } catch (error) {
+      console.error(error);
       toast.error('Impossible de charger les rendez-vous');
     } finally {
       setLoading(false);
@@ -59,7 +59,9 @@ const Appointments = () => {
     try {
       const res = await api.get('/patients');
       setPatients(res.data);
-    } catch (e) { /* ignore */ }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const openCreateModal = () => {
@@ -97,6 +99,7 @@ const Appointments = () => {
       setShowModal(false);
       fetchAppointments();
     } catch (error) {
+      console.error(error);
       toast.error(error.response?.data?.message || 'Erreur lors de la sauvegarde');
     }
   };
@@ -110,6 +113,7 @@ const Appointments = () => {
         setShowModal(false);
         fetchAppointments();
       } catch (error) {
+        console.error(error);
         toast.error('Impossible de supprimer');
       }
     }

@@ -31,6 +31,7 @@ const Treatments = () => {
       const res = await api.get('/treatments');
       setTreatments(res.data);
     } catch (error) {
+      console.error(error);
       toast.error('Impossible de charger les traitements');
     } finally {
       setLoading(false);
@@ -41,7 +42,9 @@ const Treatments = () => {
     try {
       const res = await api.get('/patients');
       setPatients(res.data);
-    } catch (e) { /* ignore */ }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const openCreate = () => {
@@ -77,6 +80,7 @@ const Treatments = () => {
       setShowModal(false);
       fetchTreatments();
     } catch (error) {
+      console.error(error);
       toast.error(error.response?.data?.message || 'Erreur lors de la sauvegarde');
     }
   };
@@ -88,6 +92,7 @@ const Treatments = () => {
         toast.success('Traitement supprimé');
         fetchTreatments();
       } catch (error) {
+        console.error(error);
         toast.error('Impossible de supprimer le traitement');
       }
     }

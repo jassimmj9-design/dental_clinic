@@ -28,6 +28,7 @@ const Billing = () => {
       const res = await api.get('/invoices');
       setInvoices(res.data);
     } catch (error) {
+      console.error(error);
       toast.error('Impossible de charger les factures');
     } finally {
       setLoading(false);
@@ -38,7 +39,9 @@ const Billing = () => {
     try {
       const res = await api.get('/patients');
       setPatients(res.data);
-    } catch (e) { /* ignore */ }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const openPaymentModal = (inv) => {
@@ -61,6 +64,7 @@ const Billing = () => {
       setShowPaymentModal(false);
       fetchInvoices();
     } catch (error) {
+      console.error(error);
       toast.error('Impossible d\'enregistrer le paiement');
     }
   };
@@ -79,6 +83,7 @@ const Billing = () => {
       setCreateForm(emptyForm);
       fetchInvoices();
     } catch (error) {
+      console.error(error);
       toast.error('Impossible de créer la facture');
     }
   };
@@ -90,6 +95,7 @@ const Billing = () => {
         toast.success('Facture supprimée');
         fetchInvoices();
       } catch (error) {
+        console.error(error);
         toast.error('Impossible de supprimer la facture');
       }
     }

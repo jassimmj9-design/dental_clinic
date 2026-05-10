@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
@@ -18,21 +18,22 @@ const PatientProfile = () => {
   const [showNoteModal, setShowNoteModal] = useState(false);
   const [newNote, setNewNote] = useState('');
 
-  useEffect(() => {
-    fetchPatient();
-  }, [id]);
-
-  const fetchPatient = async () => {
+  const fetchPatient = useCallback(async () => {
     try {
       const res = await api.get(`/patients/${id}`);
       setPatient(res.data);
     } catch (error) {
+      console.error(error);
       toast.error('Failed to load patient');
       navigate('/patients');
     } finally {
       setLoading(false);
     }
-  };
+  }, [id, navigate]);
+
+  useEffect(() => {
+    fetchPatient();
+  }, [fetchPatient]);
 
   const handleAddNote = async (e) => {
     e.preventDefault();
@@ -49,6 +50,7 @@ const PatientProfile = () => {
       setShowNoteModal(false);
       fetchPatient();
     } catch (error) {
+      console.error(error);
       toast.error('Failed to add note');
     }
   };

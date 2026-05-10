@@ -67,7 +67,7 @@ export const generatePatientReport = (patient) => {
 
   const info = [
     ['Full Name', `${patient.first_name} ${patient.last_name}`],
-    ['Patient ID', `PT-${patient.id?.toString().padStart(4, '0')}`],
+    ['Patient ID', `PT-${patient.id ? patient.id.toString().padStart(4, '0') : 'N/A'}`],
     ['Gender', patient.gender || 'N/A'],
     ['Date of Birth', patient.dob ? new Date(patient.dob).toLocaleDateString() : 'N/A'],
     ['Phone', patient.phone || 'N/A'],
@@ -100,7 +100,7 @@ export const generatePatientReport = (patient) => {
   y += splitNotes.length * 5 + 8;
 
   // Treatments Table
-  if (patient.treatments?.length > 0) {
+  if (patient.treatments && patient.treatments.length > 0) {
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(30, 64, 175);
     doc.setFontSize(11);
@@ -126,7 +126,7 @@ export const generatePatientReport = (patient) => {
   }
 
   // Appointments Table
-  if (patient.appointments?.length > 0) {
+  if (patient.appointments && patient.appointments.length > 0) {
     if (y > 240) { doc.addPage(); y = 20; }
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(30, 64, 175);
@@ -168,7 +168,9 @@ export const generateInvoicePDF = (invoice) => {
   doc.text(`Invoice #: ${invoice.id.toString().padStart(5, '0')}`, 14, y);
   doc.text(`Date: ${new Date(invoice.issued_date).toLocaleDateString()}`, 140, y);
   y += 7;
-  doc.text(`Patient: ${invoice.patient?.first_name || ''} ${invoice.patient?.last_name || ''}`, 14, y);
+  const patientFirstName = invoice.patient && invoice.patient.first_name ? invoice.patient.first_name : '';
+  const patientLastName = invoice.patient && invoice.patient.last_name ? invoice.patient.last_name : '';
+  doc.text(`Patient: ${patientFirstName} ${patientLastName}`, 14, y);
   if (invoice.due_date) {
     doc.text(`Due: ${new Date(invoice.due_date).toLocaleDateString()}`, 140, y);
   }
@@ -179,7 +181,7 @@ export const generateInvoicePDF = (invoice) => {
     startY: y,
     head: [['Description', 'Amount']],
     body: [
-      [invoice.treatment?.procedure_name || 'Acte Dentaire', `${Number(invoice.amount).toLocaleString('fr-FR')} DH`],
+      [invoice.treatment && invoice.treatment.procedure_name ? invoice.treatment.procedure_name : 'Acte Dentaire', `${Number(invoice.amount).toLocaleString('fr-FR')} DH`],
     ],
     styles: { fontSize: 10, cellPadding: 5 },
     headStyles: { fillColor: [30, 64, 175], textColor: 255, fontStyle: 'bold' },
@@ -276,9 +278,9 @@ export const generateRevenueReport = (stats, analytics) => {
 
   // Key metrics boxes
   const metrics = [
-    { label: 'Revenu Total', value: `${Number(stats?.totalRevenue || 0).toLocaleString('fr-FR')} DH` },
-    { label: 'Total Patients', value: String(stats?.totalPatients || 0) },
-    { label: 'Factures impayées', value: String(stats?.pendingInvoices || 0) },
+    { label: 'Revenu Total', value: `${Number((stats && stats.totalRevenue) || 0).toLocaleString('fr-FR')} DH` },
+    { label: 'Total Patients', value: String((stats && stats.totalPatients) || 0) },
+    { label: 'Factures impayées', value: String((stats && stats.pendingInvoices) || 0) },
   ];
 
   metrics.forEach((m, i) => {
@@ -298,7 +300,7 @@ export const generateRevenueReport = (stats, analytics) => {
   y += 32;
 
   // Revenue Trend Table
-  if (analytics?.revenueTrend?.length > 0) {
+  if (analytics && analytics.revenueTrend && analytics.revenueTrend.length > 0) {
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(30, 64, 175);
     doc.setFontSize(11);
@@ -318,7 +320,7 @@ export const generateRevenueReport = (stats, analytics) => {
   }
 
   // Common Treatments Table
-  if (analytics?.commonTreatments?.length > 0) {
+  if (analytics && analytics.commonTreatments && analytics.commonTreatments.length > 0) {
     if (y > 220) { doc.addPage(); y = 20; }
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(30, 64, 175);

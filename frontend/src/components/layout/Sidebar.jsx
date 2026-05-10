@@ -34,11 +34,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     : 'bg-primary-50 text-primary-600 font-medium shadow-sm';
   const brandColor = isDentist ? 'text-teal-600' : 'text-primary-600';
 
-  const roleLabel = {
-    dentist: 'Dentiste',
-    assistant: 'Assistante'
-  };
-
   return (
     <>
       {isOpen && (

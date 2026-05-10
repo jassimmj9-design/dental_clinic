@@ -24,6 +24,7 @@ const Patients = () => {
       const res = await api.get('/patients');
       setPatients(res.data);
     } catch (error) {
+      console.error(error);
       toast.error('Impossible de charger les patients');
     } finally {
       setLoading(false);
@@ -43,6 +44,7 @@ const Patients = () => {
         toast.success('Patient supprimé');
         fetchPatients();
       } catch (error) {
+        console.error(error);
         toast.error('Impossible de supprimer le patient');
       }
     }

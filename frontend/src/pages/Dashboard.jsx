@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import { Users, Calendar, DollarSign, Clock, ArrowRight, BarChart2, PieChart as PieChartIcon, Activity, TrendingUp, Download } from 'lucide-react';
@@ -11,7 +11,6 @@ const Dashboard = () => {
   const [stats, setStats] = useState(null);
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
