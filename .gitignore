@@ -27,3 +27,19 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Test & Coverage
+coverage/
+.nyc_output/
+backend/coverage/
+frontend/coverage/
+
+# Security Reports
+dependency-check-report/
+npm-audit.json
+eslint-report.json
+trufflehog-report.json
+sonar-report.json
+
+# Jenkins
+workspace/
